@@ -43,10 +43,12 @@ let ticker: String = "1301"
 let range: String = "6mo"
 let interval: String = "1d"
 let urlBase: String = "https://query2.finance.yahoo.com/v8/finance/chart/\(ticker).T"
-let queryStr: String = "?range=\(range)&interval=\(interval)"
+var queryStr: String = "?range=\(range)&interval=\(interval)"
+//let ustr: String = urlBase + queryStr
+let period: Int = Int(Date().timeIntervalSince1970)
+queryStr = "?period1=0&period2=\(period)&interval=\(interval)"
 let ustr: String = urlBase + queryStr
 print("url:", ustr)
-// "https://query2.finance.yahoo.com/v8/finance/chart/1301.T?range=1mo&interval=1d"
 let json = try String(contentsOf: URL(string: ustr)!, encoding: .utf8)
 //print(json) // !!!: for TEST
 
@@ -56,7 +58,7 @@ try db.execute("""
   high real, low real, close, volume real, adj real);
 """
 )
-let ar: [Candle] = json2ar(json) // !!!: for Product, just 1301
+let ar: [Candle] = json2ArG(json) // !!!: for Product, just 1301
 print("ar.count", ar.count)
 //let ar: [Candle] = json2ar(json_test) // !!!: for TEST, just 1301
 try db.execute("begin transaction;")
@@ -65,3 +67,7 @@ try ar.forEach { e in
   try sqlI.run(e.date, e.open, e.high, e.low, e.close, e.volume, e.adjclose)
 }
 try db.execute("end transaction;")
+//let ustr: String = """
+//https://query2.finance.yahoo.com/v8/finance/chart/1301.T?period1=0&period2=1747745000&interval=1d
+//"""
+// When the record of yfinance will be updated?
