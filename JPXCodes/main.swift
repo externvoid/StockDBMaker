@@ -3,32 +3,65 @@
 import Foundation
 import SQLite
 // MARK: xls to codeTbl.
-//let lines = jpxCodeTbl()
-let lines = str.components(separatedBy: .newlines) // !!!: for TEST, just 5 rec.
+let lines = jpxCodeTbl().prefix(10)
+//let lines = str.components(separatedBy: .newlines) // !!!: for TEST, just 5 rec.
 let lines_csv: [[String]] = lines.map { $0.components(separatedBy: ";") }
 
 let pathStr: String = #filePath
 let path = URL(fileURLWithPath: pathStr).deletingLastPathComponent().path
-let tbl: String = "codeTbl"
+let tbl: String = "dateCodeTbl"
 
 let db = try Connection(path + "/stock.db")
 print(path + "/stock.db")
 try db.execute("""
   drop table if exists \(tbl);
   CREATE TABLE \(tbl) (date text, code text PRIMARY KEY NOT NULL,
-    name TEXT, mkt TEXT, sec33 TEXT, ind33 TEXT, sec17 TEXT,
-    ind17 TEXT, scal TEXT, scnm TEXT );
+  name TEXT, mkt TEXT, sec33 TEXT, ind33 TEXT, sec17 TEXT,
+  ind17 TEXT, scal TEXT, scnm TEXT);
 """
 )
 
 let sql = try db.prepare("insert into \(tbl) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")
 try db.execute("begin transaction;")
-try lines_csv.forEach { e in
+try lines_csv.forEach { e in // date, code, name, ...
   try sql.run(e[0],  e[1], e[2], e[3], e[4], e[5], e[6], e[7], e[8], e[9])
 }
 try db.execute("end transaction;")
 
 // MARK: Download JSON and Save to 1301 table.
+try lines_csv.forEach { e in
+  let ticker = e[1]
+  let ustr = makeUrl(ticker, unixTimestamp(2025, 5, 19))
+  //let ustr = makeUrl(ticker, 1747621694)
+  // !!!: fetch
+  let json = yfetch(ustr); sleep(1)
+
+  // !!!: sqlite3
+  try db.execute("""
+    drop table if exists '\(ticker)';
+    CREATE TABLE '\(ticker)' (date text PRIMARY KEY NOT NULL, open real,
+    high real, low real, close, volume real, adj real);
+  """
+  )
+  let ar: [Candle] = json2ArG(json) // !!!: for Product, just 1301
+  // !!!: log
+  let sub =
+  ustr.split(separator: "/chart").last?.split(separator: "?period1").first
+  print("url:", String(sub!), "count:", ar.count)
+
+  //let ar: [Candle] = json2ar(json_test) // !!!: for TEST, just 1301
+  try db.execute("begin transaction;")
+  let sqlI = try db.prepare("insert into '\(ticker)' values (?, ?, ?, ?, ?, ?, ?);")
+  try ar.forEach { e in
+    try sqlI.run(e.date, e.open, e.high, e.low, e.close, e.volume, e.adjclose)
+  }
+  try db.execute("end transaction;")
+}
+//let ustr: String = """
+//https://query2.finance.yahoo.com/v8/finance/chart/1301.T?period1=0&period2=1747745000&interval=1d
+//"""
+// When the record of yfinance will be updated?
+
 // TODO: see below
 // 1. let url: String = "https://..."
 // 3. line2_csv.forEach { e in
@@ -39,35 +72,12 @@ try db.execute("end transaction;")
 // 5. create table
 // 6. sql
 // 7. ar.forEach
-let ticker: String = "1301"
-let range: String = "6mo"
-let interval: String = "1d"
-let urlBase: String = "https://query2.finance.yahoo.com/v8/finance/chart/\(ticker).T"
-var queryStr: String = "?range=\(range)&interval=\(interval)"
-//let ustr: String = urlBase + queryStr
-let period: Int = Int(Date().timeIntervalSince1970)
-queryStr = "?period1=0&period2=\(period)&interval=\(interval)"
-let ustr: String = urlBase + queryStr
-print("url:", ustr)
-let json = try String(contentsOf: URL(string: ustr)!, encoding: .utf8)
-//print(json) // !!!: for TEST
+//let ticker = "1301"
 
-try db.execute("""
-  drop table if exists '\(ticker)';
-  CREATE TABLE '\(ticker)' (date text PRIMARY KEY NOT NULL, open real,
-  high real, low real, close, volume real, adj real);
-"""
-)
-let ar: [Candle] = json2ArG(json) // !!!: for Product, just 1301
-print("ar.count", ar.count)
-//let ar: [Candle] = json2ar(json_test) // !!!: for TEST, just 1301
-try db.execute("begin transaction;")
-let sqlI = try db.prepare("insert into '\(ticker)' values (?, ?, ?, ?, ?, ?, ?);")
-try ar.forEach { e in
-  try sqlI.run(e.date, e.open, e.high, e.low, e.close, e.volume, e.adjclose)
-}
-try db.execute("end transaction;")
-//let ustr: String = """
-//https://query2.finance.yahoo.com/v8/finance/chart/1301.T?period1=0&period2=1747745000&interval=1d
+// create view table
+//try db.execute("""
+//    create if not exists view codeTbl as select
+//    code, name, mkt, sec33, ind33, sec17, ind17, scal, scnm
+//    from dateCodeTbl);
 //"""
-// When the record of yfinance will be updated?
+//)
