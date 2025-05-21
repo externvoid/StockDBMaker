@@ -23,7 +23,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		8733C2E02DD9E74D00AD8AC1 /* JPXCodes */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JPXCodes; sourceTree = BUILT_PRODUCTS_DIR; };
+		8733C2E02DD9E74D00AD8AC1 /* stockDBMaker */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = stockDBMaker; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -57,7 +57,7 @@
 		8733C2E12DD9E74D00AD8AC1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8733C2E02DD9E74D00AD8AC1 /* JPXCodes */,
+				8733C2E02DD9E74D00AD8AC1 /* stockDBMaker */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -65,9 +65,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8733C2DF2DD9E74D00AD8AC1 /* JPXCodes */ = {
+		8733C2DF2DD9E74D00AD8AC1 /* stockDBMaker */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8733C2E72DD9E74D00AD8AC1 /* Build configuration list for PBXNativeTarget "JPXCodes" */;
+			buildConfigurationList = 8733C2E72DD9E74D00AD8AC1 /* Build configuration list for PBXNativeTarget "stockDBMaker" */;
 			buildPhases = (
 				8733C2DC2DD9E74D00AD8AC1 /* Sources */,
 				8733C2DD2DD9E74D00AD8AC1 /* Frameworks */,
@@ -80,12 +80,12 @@
 			fileSystemSynchronizedGroups = (
 				8733C2E22DD9E74D00AD8AC1 /* JPXCodes */,
 			);
-			name = JPXCodes;
+			name = stockDBMaker;
 			packageProductDependencies = (
 				8733C2EB2DD9E79200AD8AC1 /* SQLite */,
 			);
 			productName = JPXCodes;
-			productReference = 8733C2E02DD9E74D00AD8AC1 /* JPXCodes */;
+			productReference = 8733C2E02DD9E74D00AD8AC1 /* stockDBMaker */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -103,7 +103,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8733C2DB2DD9E74D00AD8AC1 /* Build configuration list for PBXProject "JPXCodes" */;
+			buildConfigurationList = 8733C2DB2DD9E74D00AD8AC1 /* Build configuration list for PBXProject "StockDBMaker" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -120,7 +120,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8733C2DF2DD9E74D00AD8AC1 /* JPXCodes */,
+				8733C2DF2DD9E74D00AD8AC1 /* stockDBMaker */,
 			);
 		};
 /* End PBXProject section */
@@ -259,10 +259,15 @@
 		8733C2E82DD9E74D00AD8AC1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = XB3BR4BYPE;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = XB3BR4BYPE;
 				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				PRODUCT_BUNDLE_IDENTIFIER = jp.tanapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -270,10 +275,15 @@
 		8733C2E92DD9E74D00AD8AC1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = XB3BR4BYPE;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = XB3BR4BYPE;
 				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
+				PRODUCT_BUNDLE_IDENTIFIER = jp.tanapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -281,7 +291,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8733C2DB2DD9E74D00AD8AC1 /* Build configuration list for PBXProject "JPXCodes" */ = {
+		8733C2DB2DD9E74D00AD8AC1 /* Build configuration list for PBXProject "StockDBMaker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8733C2E52DD9E74D00AD8AC1 /* Debug */,
@@ -290,7 +300,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8733C2E72DD9E74D00AD8AC1 /* Build configuration list for PBXNativeTarget "JPXCodes" */ = {
+		8733C2E72DD9E74D00AD8AC1 /* Build configuration list for PBXNativeTarget "stockDBMaker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8733C2E82DD9E74D00AD8AC1 /* Debug */,

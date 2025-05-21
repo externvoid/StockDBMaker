@@ -3,12 +3,17 @@
 import Foundation
 import SQLite
 // MARK: xls to codeTbl.
-let lines = jpxCodeTbl().prefix(10)
+let lines = jpxCodeTbl()//.prefix(10)
 //let lines = str.components(separatedBy: .newlines) // !!!: for TEST, just 5 rec.
 let lines_csv: [[String]] = lines.map { $0.components(separatedBy: ";") }
 
-let pathStr: String = #filePath
-let path = URL(fileURLWithPath: pathStr).deletingLastPathComponent().path
+//let pathStr: String = #filePath
+//let path = URL(fileURLWithPath: pathStr).deletingLastPathComponent().path
+#if DEBUG
+let path = getSrcsPath()
+#else
+let path = getExePath()
+#endif
 let tbl: String = "dateCodeTbl"
 
 let db = try Connection(path + "/stock.db")
@@ -20,6 +25,14 @@ try db.execute("""
   ind17 TEXT, scal TEXT, scnm TEXT);
 """
 )
+// create view table
+try db.execute("""
+    create view if not exists codeTbl(code, name, mkt, sec33, ind33,
+    sec17, ind17, scal, scnm) as select
+    code, name, mkt, sec33, ind33, sec17, ind17, scal, scnm
+    from dateCodeTbl;
+"""
+)
 
 let sql = try db.prepare("insert into \(tbl) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")
 try db.execute("begin transaction;")
@@ -29,13 +42,17 @@ try lines_csv.forEach { e in // date, code, name, ...
 try db.execute("end transaction;")
 
 // MARK: Download JSON and Save to 1301 table.
-try lines_csv.forEach { e in
+//try [["foo", "25935"]].forEach { e in
+try lines_csv.forEach { e in // ???: for product
   let ticker = e[1]
-  let ustr = makeUrl(ticker, unixTimestamp(2025, 5, 19))
+  let ustr = makeUrl(ticker)
+//  let ustr = makeUrl2(ticker, "10y")
+//  let ustr = makeUrl(ticker, unixTimestamp(2025, 5, 19)) // !!!: period
   //let ustr = makeUrl(ticker, 1747621694)
   // !!!: fetch
   let json = yfetch(ustr); sleep(1)
-
+  let ar: [Candle] = json2ArG(json) // !!!: for Product, just 1301
+  if ar.isEmpty { print("safely skipped"); return }
   // !!!: sqlite3
   try db.execute("""
     drop table if exists '\(ticker)';
@@ -43,11 +60,11 @@ try lines_csv.forEach { e in
     high real, low real, close, volume real, adj real);
   """
   )
-  let ar: [Candle] = json2ArG(json) // !!!: for Product, just 1301
+//  let ar: [Candle] = json2ArG(json) // !!!: for Product, just 1301
   // !!!: log
   let sub =
-  ustr.split(separator: "/chart").last?.split(separator: "?period1").first
-  print("url:", String(sub!), "count:", ar.count)
+  ustr.split(separator: "/chart/").last?.split(separator: "?period1").first
+  print("ticker:", String(sub!), "count:", ar.count)
 
   //let ar: [Candle] = json2ar(json_test) // !!!: for TEST, just 1301
   try db.execute("begin transaction;")

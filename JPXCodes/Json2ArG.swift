@@ -9,11 +9,18 @@ typealias Candle0 = (date: String, open: Double?, high: Double?, low: Double?,
 func json2ArG(_ json: String) -> [Candle] {
 
   let decoder = JSONDecoder()
-  let hist = try! decoder.decode(Root.self, from: json.data(using: .utf8)!)
+  var hist: Root? = nil
+  do {
+    hist = try decoder.decode(Root.self, from: json.data(using: .utf8)!)
+
+  } catch {
+    print("error@json2ArG: \(error)")
+    return []
+  }
   var zr: [[Double?]] = []
   var wr: [Candle0] = []; var cnt: Int = 0
 
-  if let ar = hist.chart.result?[0].indicators.quote?.first {
+  if let ar = hist!.chart.result?[0].indicators.quote?.first {
     let open = ar.open; let high = ar.high; let low = ar.low;
     let close = ar.close; let volume = ar.volume
     cnt = open.count
@@ -22,7 +29,7 @@ func json2ArG(_ json: String) -> [Candle] {
     }
   }
 
-  if let ar = hist.chart.result?[0].indicators.adjclose?.first?.adjclose {
+  if let ar = hist!.chart.result?[0].indicators.adjclose?.first?.adjclose {
     for i in 0..<cnt {
       zr[i].append(ar[i])
     }
@@ -32,7 +39,7 @@ func json2ArG(_ json: String) -> [Candle] {
   dateFormatter.timeZone = TimeZone(secondsFromGMT: 32400) // UTCに設定
 
 
-  if let ar = hist.chart.result?[0].timestamp {
+  if let ar = hist!.chart.result?[0].timestamp {
     let utc: [String] = ar.map { timeInterval in
       let date = Date(timeIntervalSince1970: TimeInterval(timeInterval))
       return dateFormatter.string(from: date)

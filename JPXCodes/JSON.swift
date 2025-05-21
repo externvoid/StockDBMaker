@@ -34,9 +34,9 @@ struct Meta: Decodable {
   let regularMarketPrice: Double // JSONでは整数だが、価格はDoubleが安全
   let fiftyTwoWeekHigh: Double
   let fiftyTwoWeekLow: Double
-  let regularMarketDayHigh: Double // 同上
-  let regularMarketDayLow: Double  // 同上
-  let regularMarketVolume: Int
+  let regularMarketDayHigh: Double? // 同上
+  let regularMarketDayLow: Double?  // 同上
+  let regularMarketVolume: Int? // !!!: avoid 25935.T error
   let longName: String? // nullの可能性も考慮
   let shortName: String? // nullの可能性も考慮
   let chartPreviousClose: Double

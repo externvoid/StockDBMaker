@@ -10,6 +10,9 @@ func makeUrl(_ ticker: String, _ period1: Int = 0,
                 _ period2: Int = Int(Date().timeIntervalSince1970),
                 _ interval: String = "1d") -> String {
 
+//  let period3: Int = Int(period2/100) * 100
+//  let period3: Int = 1747745000
+
   let urlBase: String = "https://query2.finance.yahoo.com/v8/finance/chart/\(ticker).T"
   let queryStr: String = "?period1=\(period1)&period2=\(period2)&interval=\(interval)"
 
@@ -54,3 +57,21 @@ func unixTimestamp(_ yr: Int, _ mo: Int, _ dy: Int) -> Int {
   }
 }
 //print(unixTimestamp(2025, 5, 21)) // JST 2025年5月21日9時のUNIX時刻 1747785600
+func getExePath() -> String {
+  let execPath = CommandLine.arguments[0]
+  let execURL = URL(fileURLWithPath: execPath)
+  let execDir = execURL.deletingLastPathComponent()
+
+  // not include last '/'
+  //  print("実行ファイルのフォルダ: \(execDir.path)")
+  return execDir.path
+}
+func getSrcsPath() -> String {
+  let pathStr: String = #filePath
+  let path = URL(fileURLWithPath: pathStr).deletingLastPathComponent().path
+  // not include last '/'
+  return path
+}
+
+
+
