@@ -1,4 +1,4 @@
-J-StockDBMaker
+J-StockDBMaker<img href="https://img.shields.io/badge/Version-0.1-blue"></img>
 <br><a href="#e-README">English README</a>
 <br>日本証券取引に上場されている銘柄の時系列データをDownloadしSQLite3 Database作成ツール
 
