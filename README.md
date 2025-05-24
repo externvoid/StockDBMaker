@@ -1,4 +1,6 @@
 <h3 align=center>J-StockDBMaker</h3> <img src="https://img.shields.io/badge/Version-0.1-blue">
+<img src="https://img.shields.io/badge/platform-macOS-green">
+
 <br><a href="#e-README">English README</a>
 <br>日本証券取引に上場されている銘柄の時系列データをDownloadしSQLite3 Database作成ツール
 
