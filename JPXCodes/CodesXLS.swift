@@ -1,6 +1,6 @@
 //  Created by Tanaka Hiroshi on 2025/05/18.
 import Foundation
-func jpxCodeTbl() -> [String] {
+func jpxCodeTbl_old() -> [String] {
   let url = URL(string: "https://www.jpx.co.jp/markets/statistics-equities/misc/tvdivq0000001vg2-att/data_j.xls")!
   // 一時ファイルの保存先
   let tempDir = FileManager.default.temporaryDirectory

@@ -3,9 +3,10 @@
 import Foundation
 import SQLite
 // MARK: xls to codeTbl.
-let lines = jpxCodeTbl()//.prefix(10)
+let lines_csv: [[String]] = jpxCodeTbl()//.prefix(10)
+//let lines = jpxCodeTbl()//.prefix(10)
 //let lines = str.components(separatedBy: .newlines) // !!!: for TEST, just 5 rec.
-let lines_csv: [[String]] = lines.map { $0.components(separatedBy: ";") }
+//let lines_csv: [[String]] = lines.map { $0.components(separatedBy: ";") }
 
 //let pathStr: String = #filePath
 //let path = URL(fileURLWithPath: pathStr).deletingLastPathComponent().path
@@ -30,7 +31,7 @@ try db.execute("""
     create view if not exists codeTbl(code, name, mkt, sec33, ind33,
     sec17, ind17, scal, scnm) as select
     code, name, mkt, sec33, ind33, sec17, ind17, scal, scnm
-    from dateCodeTbl;
+    from dateCodeTbl where length(code)=4 and mkt not like '%Pro%';
 """
 )
 

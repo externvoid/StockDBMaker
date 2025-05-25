@@ -1,5 +1,7 @@
 J-StockDBMaker
 <br><a href="#e-README">English README</a>
+<span><img src="https://img.shields.io/badge/Version-0.1-blue">
+<img src="https://img.shields.io/badge/platform-macOS-green"></span>
 <br>日本証券取引に上場されている銘柄の時系列データをDownloadしSQLite3 Database作成ツール
 
 実行するとstock.dbファイルが本ツールを配置したフォルダに作成されます。ファイルの中身は次のsqlite3コマンドの実行結果のとおりです。
