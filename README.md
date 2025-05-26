@@ -60,13 +60,13 @@ date|open|high|low|close|volume|adj
 sqlite> SELECT count(*) from '1301';
 count(*)
 6080
-sqlite> select * from codeTbl limit 5;
+sqlite> select * from ecodeTbl limit 5;
 code|name|mkt|sec33|ind33|sec17|ind17|scal|scnm
-1301|極洋|プライム（内国株式）|50|水産・農林業|1|食品|7|TOPIX Small 2
-1305|ｉＦｒｅｅＥＴＦ　ＴＯＰＩＸ（年１回決算型）|ETF・ETN|-|-|-|-|-|-
-1306|ＮＥＸＴ　ＦＵＮＤＳ　ＴＯＰＩＸ連動型上場投信|ETF・ETN|-|-|-|-|-|-
-1308|上場インデックスファンドＴＯＰＩＸ|ETF・ETN|-|-|-|-|-|-
-1309|ＮＥＸＴ　ＦＵＮＤＳ　ＣｈｉｎａＡＭＣ・中国株式・上証５０連動型上場投信|ETF・ETN|-|-|-|-|-|-
+1301|KYOKUYO CO.,LTD.|Prime Market (Domestic)|50|Fishery, Agriculture and Forestry|1|FOODS|7|TOPIX Small 2
+1305|iFreeETF TOPIX (Yearly Dividend Type)|ETFs/ ETNs|-|-|-|-|-|-
+1306|NEXT FUNDS TOPIX Exchange Traded Fund|ETFs/ ETNs|-|-|-|-|-|-
+1308|Listed Index Fund TOPIX|ETFs/ ETNs|-|-|-|-|-|-
+1309|NEXT FUNDS ChinaAMC SSE50 Index Exchange Traded Fund|ETFs/ ETNs|-|-|-|-|-|-
 sqlite>
 ```
 Dependency Repository
